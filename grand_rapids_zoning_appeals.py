@@ -18,28 +18,29 @@ class GrandRapidsZoningAppealsSpider(CityScrapersSpider):
         needs.
         """
         for item in response.css('.MeetingRow'):
-            if response.css('.RowTop .RowRight span::text').get() is not None:
-                meeting = Meeting(
-                    title=self._parse_title(item),
-                    description=self._parse_description(item),
-                    classification=self._parse_classification(item),
-                    start=self._parse_start(item),
-                    end=self._parse_end(item),
-                    all_day=self._parse_all_day(item),
-                    time_notes=self._parse_time_notes(item),
-                    location=self._parse_location(item),
-                    links=self._parse_links(item),
-                    source=self._parse_source(response),
-                )
+            if (response.css('.RowTop .RowRight span::text').get() is not None):
+                if ('Zoning' in item.css('.RowBottom div:nth-child(2)::text').get()):
+                    meeting = Meeting(
+                        title=self._parse_title(item),
+                        description=self._parse_description(item),
+                        classification=self._parse_classification(item),
+                        start=self._parse_start(item),
+                        end=self._parse_end(item),
+                        all_day=self._parse_all_day(item),
+                        time_notes=self._parse_time_notes(item),
+                        location=self._parse_location(item),
+                        links=self._parse_links(item),
+                        source=self._parse_source(response),
+                    )
 
-                meeting["status"] = self._get_status(meeting)
-                meeting["id"] = self._get_id(meeting)
+                    meeting["status"] = self._get_status(meeting)
+                    meeting["id"] = self._get_id(meeting)
 
-                yield meeting
+                    yield meeting
 
     def _parse_title(self, item):
         """Parse or generate meeting title."""
-        title = item.css('.RowBottom div:nth-child(2)::text').get()
+        title = item.css('.RowBottom div:nth-child(2)::text').get().split('-')[0]
         return title
 
     def _parse_description(self, item):
