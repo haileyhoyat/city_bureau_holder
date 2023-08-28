@@ -4,10 +4,8 @@ from city_scrapers_core.constants import NOT_CLASSIFIED
 from city_scrapers_core.items import Meeting
 from city_scrapers_core.spiders import CityScrapersSpider
 from dateutil.parser import parser
-from scrapy_selenium import SeleniumRequest
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
 
 
 class IndAdminFinanceSpider(CityScrapersSpider):
@@ -19,17 +17,6 @@ class IndAdminFinanceSpider(CityScrapersSpider):
     ]
 
     def parse(self, response):
-        print("inside parse")
-        yield SeleniumRequest(
-            url="https://calendar.indy.gov/event/administration-and-finance-committee-meeting/",  # noqa
-            callback=self.parse_result,
-            wait_time=10,
-            wait_until=EC.presence_of_element_located(
-                (By.CLASS_NAME, "full-schedule-container")
-            ),
-        )
-
-    def parse_result(self, response):
         print("inside parse_result")
         meeting_list = []
         driver = webdriver.Chrome()
