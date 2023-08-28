@@ -14,15 +14,19 @@ class IndAdminFinanceSpider(CityScrapersSpider):
     name = "ind_admin_finance"
     agency = "Indianapolis Administration Finance Committee"
     timezone = "America/Chicago"
-    start_urls = ["https://calendar.indy.gov/event/administration-and-finance-committee-meeting/"]
+    start_urls = [
+        "https://calendar.indy.gov/event/administration-and-finance-committee-meeting/"
+    ]
 
     def parse(self, response):
         print("inside parse")
         yield SeleniumRequest(
-            url="https://calendar.indy.gov/event/administration-and-finance-committee-meeting/",
+            url="https://calendar.indy.gov/event/administration-and-finance-committee-meeting/",  # noqa
             callback=self.parse_result,
             wait_time=10,
-            wait_until=EC.presence_of_element_located((By.CLASS_NAME, "full-schedule-container")),
+            wait_until=EC.presence_of_element_located(
+                (By.CLASS_NAME, "full-schedule-container")
+            ),
         )
 
     def parse_result(self, response):
@@ -30,38 +34,40 @@ class IndAdminFinanceSpider(CityScrapersSpider):
         meeting_list = []
         driver = webdriver.Chrome()
         driver.get(
-            "https://calendar.indy.gov/event/administration-and-finance-committee-meeting/"
+            "https://calendar.indy.gov/event/administration-and-finance-committee-meeting/"  # noqa
         )
         time.sleep(10)
         try:
-            schedule_element = driver.find_element(By.CLASS_NAME, "full-schedule-container")
+            schedule_element = driver.find_element(
+                By.CLASS_NAME, "full-schedule-container"
+            )
             location_element = driver.find_element(By.CLASS_NAME, "list-event-locale")
-            #print("found element")
+            # print("found element")
             schedule_html = schedule_element.get_attribute("innerHTML")
             location_html = location_element.get_attribute("innerHTML")
             # print("This is the returned html of the element")
-            #print(schedule_element.get_attribute("innerHTML"))
-            #print(location_element.get_attribute("innerHTML"))
+            # print(schedule_element.get_attribute("innerHTML"))
+            # print(location_element.get_attribute("innerHTML"))
 
             if "City-County Building, Meeting Room 260" in location_html:
                 location = {
-                        "address": "200 East Washington Street, Indianapolis IN, 46204",
-                        "name": "City-County Building, Meeting Room 260",
-                    }
+                    "address": "200 East Washington Street, Indianapolis IN, 46204",
+                    "name": "City-County Building, Meeting Room 260",
+                }
             else:
                 location = {
-                        "address": "200 East Washington Street, Indianapolis IN, 46204",
-                        "name": "City-County Building, Meeting Room 260",
-                    }
+                    "address": "200 East Washington Street, Indianapolis IN, 46204",
+                    "name": "City-County Building, Meeting Room 260",
+                }
 
-            for meeting in schedule_html.split('<a'):
+            for meeting in schedule_html.split("<a"):
                 meeting_list.append(meeting)
 
             print("number of meetings in list: " + str(len(meeting_list)))
 
         finally:
             driver.quit()
- 
+
         for item in meeting_list[2::]:
             # for item in element.selector.xpath("//div[@class='descripton']//p"):
             meeting = Meeting(
@@ -125,11 +131,15 @@ class IndAdminFinanceSpider(CityScrapersSpider):
     def _parse_links(self, item):
         """Parse or generate links."""
 
-        meeting_page = item.split("href=\"")[1]
-        meeting_page2 = meeting_page.split("\" class")[0]
-        
+        meeting_page = item.split('href="')[1]
+        meeting_page2 = meeting_page.split('" class')[0]
 
-        return [{"href": "https://calendar.indy.gov" + meeting_page2, "title": "Meeting Page"}]
+        return [
+            {
+                "href": "https://calendar.indy.gov" + meeting_page2,
+                "title": "Meeting Page",
+            }
+        ]
 
     def _parse_source(self, response):
         """Parse or generate source."""
