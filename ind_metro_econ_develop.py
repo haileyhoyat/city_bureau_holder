@@ -8,30 +8,18 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 
 
-class IndParksRecSpider(CityScrapersSpider):
-    name = "ind_parks_rec"
-    agency = "Indianapolis Parks and Recreation Committee"
+class IndMetroEconDevelopSpider(CityScrapersSpider):
+    name = "ind_metro_econ_develop"
+    agency = "Indianapolis Metropolitan and Economic Development Committee"
     timezone = "America/Chicago"
-    start_urls = ["https://calendar.indy.gov/event/parks-and-recreation-committee/"]
-    """
-    def parse(self, response):
-        print("inside parse")
-        yield SeleniumRequest(
-            url="https://calendar.indy.gov/event/parks-and-recreation-committee/",  # noqa
-            callback=self.parse_result,
-            wait_time=10,
-            wait_until=EC.presence_of_element_located(
-                (By.CLASS_NAME, "full-schedule-container")
-            ),
-        )
-    """
+    start_urls = ["https://calendar.indy.gov/event/metropolitan-and-economic-development-committee/"]
 
     def parse(self, response):
         print("inside parse_result")
         meeting_list = []
         driver = webdriver.Chrome()
         driver.get(
-            "https://calendar.indy.gov/event/parks-and-recreation-committee/"  # noqa
+            "https://calendar.indy.gov/event/metropolitan-and-economic-development-committee/"  # noqa
         )
         time.sleep(10)
         try:
@@ -46,10 +34,10 @@ class IndParksRecSpider(CityScrapersSpider):
             # print(schedule_element.get_attribute("innerHTML"))
             # print(location_element.get_attribute("innerHTML"))
 
-            if "City-County Building, Meeting Room 260" in location_html:
+            if "Public Assembly Room" in location_html:
                 location = {
-                    "address": "200 East Washington Street, Indianapolis IN, 46204",
-                    "name": "City-County Building, Meeting Room 260",
+                    "address": "200 East Washington Street, Room 230 Indianapolis IN 46204",
+                    "name": "City-County Building, Public Assembly Room (PAR)",
                 }
             else:
                 location = {
@@ -87,7 +75,7 @@ class IndParksRecSpider(CityScrapersSpider):
 
     def _parse_title(self, item):
         """Parse or generate meeting title."""
-        return "Parks and Recreation Committee"
+        return "Metropolitan and Economic Development Committee"
 
     def _parse_description(self, item):
         """Parse or generate meeting description."""

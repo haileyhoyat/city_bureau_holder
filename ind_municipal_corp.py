@@ -8,30 +8,18 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 
 
-class IndParksRecSpider(CityScrapersSpider):
-    name = "ind_parks_rec"
-    agency = "Indianapolis Parks and Recreation Committee"
+class IndMunicipalCorpSpider(CityScrapersSpider):
+    name = "ind_municipal_corp"
+    agency = "Indianpolis Municipal Corporations Committee"
     timezone = "America/Chicago"
-    start_urls = ["https://calendar.indy.gov/event/parks-and-recreation-committee/"]
-    """
-    def parse(self, response):
-        print("inside parse")
-        yield SeleniumRequest(
-            url="https://calendar.indy.gov/event/parks-and-recreation-committee/",  # noqa
-            callback=self.parse_result,
-            wait_time=10,
-            wait_until=EC.presence_of_element_located(
-                (By.CLASS_NAME, "full-schedule-container")
-            ),
-        )
-    """
+    start_urls = ["https://calendar.indy.gov/event/municipal-corporations-committee/"]
 
     def parse(self, response):
         print("inside parse_result")
         meeting_list = []
         driver = webdriver.Chrome()
         driver.get(
-            "https://calendar.indy.gov/event/parks-and-recreation-committee/"  # noqa
+            "https://calendar.indy.gov/event/municipal-corporations-committee/"  # noqa
         )
         time.sleep(10)
         try:
@@ -87,7 +75,7 @@ class IndParksRecSpider(CityScrapersSpider):
 
     def _parse_title(self, item):
         """Parse or generate meeting title."""
-        return "Parks and Recreation Committee"
+        return "Municipal Corporations Committee"
 
     def _parse_description(self, item):
         """Parse or generate meeting description."""
