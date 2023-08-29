@@ -43,8 +43,8 @@ class IndAdminFinanceSpider(CityScrapersSpider):
                 }
             else:
                 location = {
-                    "address": "200 East Washington Street, Indianapolis IN, 46204",
-                    "name": "City-County Building, Meeting Room 260",
+                    "address": "",
+                    "name": "",
                 }
 
             for meeting in schedule_html.split("<a"):

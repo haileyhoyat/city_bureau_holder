@@ -8,32 +8,18 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 
 
-class IndEnvironmentalSustainabilitySpider(CityScrapersSpider):
-    name = "ind_environmental_sustainability"
-    agency = "Indianapolis Environmental Sustainability Committee"
+class IndEduSpider(CityScrapersSpider):
+    name = "ind_edu"
+    agency = "Indianapolis Education Committee"
     timezone = "America/Chicago"
-    start_urls = [
-        "https://calendar.indy.gov/event/environmental-sustainability-committee/"
-    ]
-    """
-    def parse(self, response):
-        print("inside parse")
-        yield SeleniumRequest(
-            url="https://calendar.indy.gov/event/environmental-sustainability-committee/",  # noqa
-            callback=self.parse_result,
-            wait_time=10,
-            wait_until=EC.presence_of_element_located(
-                (By.CLASS_NAME, "full-schedule-container")
-            ),
-        )
-    """
+    start_urls = ["https://calendar.indy.gov/event/education-committee/"]
 
     def parse(self, response):
         print("inside parse_result")
         meeting_list = []
         driver = webdriver.Chrome()
         driver.get(
-            "https://calendar.indy.gov/event/environmental-sustainability-committee/"
+            "https://calendar.indy.gov/event/education-committee/"  # noqa
         )
         time.sleep(10)
         try:
@@ -89,7 +75,7 @@ class IndEnvironmentalSustainabilitySpider(CityScrapersSpider):
 
     def _parse_title(self, item):
         """Parse or generate meeting title."""
-        return "Environmental Sustainability Committee"
+        return "Education Committee"
 
     def _parse_description(self, item):
         """Parse or generate meeting description."""

@@ -8,32 +8,18 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 
 
-class IndEnvironmentalSustainabilitySpider(CityScrapersSpider):
-    name = "ind_environmental_sustainability"
-    agency = "Indianapolis Environmental Sustainability Committee"
+class IndCommunityAffairsSpider(CityScrapersSpider):
+    name = "ind_community_affairs"
+    agency = "Indianapolis Community Affairs Committee"
     timezone = "America/Chicago"
-    start_urls = [
-        "https://calendar.indy.gov/event/environmental-sustainability-committee/"
-    ]
-    """
-    def parse(self, response):
-        print("inside parse")
-        yield SeleniumRequest(
-            url="https://calendar.indy.gov/event/environmental-sustainability-committee/",  # noqa
-            callback=self.parse_result,
-            wait_time=10,
-            wait_until=EC.presence_of_element_located(
-                (By.CLASS_NAME, "full-schedule-container")
-            ),
-        )
-    """
+    start_urls = ["https://calendar.indy.gov/event/community-affairs-committee/"]
 
     def parse(self, response):
         print("inside parse_result")
         meeting_list = []
         driver = webdriver.Chrome()
         driver.get(
-            "https://calendar.indy.gov/event/environmental-sustainability-committee/"
+            "https://calendar.indy.gov/event/community-affairs-committee/"  # noqa
         )
         time.sleep(10)
         try:
@@ -48,10 +34,10 @@ class IndEnvironmentalSustainabilitySpider(CityScrapersSpider):
             # print(schedule_element.get_attribute("innerHTML"))
             # print(location_element.get_attribute("innerHTML"))
 
-            if "City-County Building, Meeting Room 260" in location_html:
+            if "Public Assembly Room" in location_html:
                 location = {
-                    "address": "200 East Washington Street, Indianapolis IN, 46204",
-                    "name": "City-County Building, Meeting Room 260",
+                    "address": "200 East Washington Street, Room 230 Indianapolis IN 46204",
+                    "name": "City-County Building, Public Assembly Room (PAR)",
                 }
             else:
                 location = {
@@ -89,7 +75,7 @@ class IndEnvironmentalSustainabilitySpider(CityScrapersSpider):
 
     def _parse_title(self, item):
         """Parse or generate meeting title."""
-        return "Environmental Sustainability Committee"
+        return "Community Affairs Committee"
 
     def _parse_description(self, item):
         """Parse or generate meeting description."""
