@@ -34,7 +34,7 @@ class IndIhpcSpider(CityScrapersSpider):
 
             if "City-County Building, Public Assembly Room" in location_html:
                 location = {
-                    "address": "200 East Washington Street, Room 230 Indianapolis IN 46204",  # noqa
+                    "address": "200 East Washington Street, Indianapolis IN 46204",  # noqa
                     "name": "City-County Building, Public Assembly Room (PAR)",
                 }
             else:
