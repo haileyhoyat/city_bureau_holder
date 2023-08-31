@@ -18,9 +18,7 @@ class IndIhpcSpider(CityScrapersSpider):
         print("inside parse_result")
         meeting_list = []
         driver = webdriver.Chrome()
-        driver.get(
-            "https://calendar.indy.gov/event/ihpc-commission-hearing/"  # noqa
-        )
+        driver.get("https://calendar.indy.gov/event/ihpc-commission-hearing/")  # noqa
         time.sleep(10)
         try:
             schedule_element = driver.find_element(
@@ -36,7 +34,7 @@ class IndIhpcSpider(CityScrapersSpider):
 
             if "City-County Building, Public Assembly Room" in location_html:
                 location = {
-                    "address": "200 East Washington Street, Room 230 Indianapolis IN 46204",
+                    "address": "200 East Washington Street, Room 230 Indianapolis IN 46204",  # noqa
                     "name": "City-County Building, Public Assembly Room (PAR)",
                 }
             else:
@@ -87,16 +85,13 @@ class IndIhpcSpider(CityScrapersSpider):
 
     def _parse_start(self, item):
         """Parse start datetime as a naive datetime object."""
+        print(item)
         date = item.split(">")[1]
         date2 = date.split("<")[0]
 
-        try:
-            time = item.split("<br>")[1]
-            time2 = time.split(" - ")[0]
-        except:
-            time = item.split("<br>")[1]
-            time2 = time.split("</a>")[0]
-            
+        time = item.split("<br>")[1]
+        time2 = time.split("</a>")[0]
+
         return parser().parse(date2 + " " + time2)
 
     def _parse_end(self, item):
