@@ -77,7 +77,7 @@ class IndMetroDevelopSpider(CityScrapersSpider):
 
     def _parse_title(self, item):
         """Parse or generate meeting title."""
-        return "Metropolitan and Economic Development Committee"
+        return "Metropolitan Development Committee"
 
     def _parse_description(self, item):
         """Parse or generate meeting description."""
